@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anas Khan | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #14b8a6;
+      --light: #f8fafc;
+      --text: #1e293b;
+      --assistant: #e0f7fa;
+      --user: #d1e7ff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--light);
+      color: var(--text);
+      display: flex;
+      scroll-behavior: smooth;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: var(--primary);
+      color: white;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar h2 {
+      margin: 0 0 20px 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #14b8a6, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .sidebar h2:hover {
+      transform: scale(1.1);
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: block;
+      padding: 10px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #14b8a6, #06b6d4);
+      transition: all 0.3s ease;
+    }
+    .sidebar ul li a:hover {
+      background: linear-gradient(90deg, #06b6d4, #3b82f6);
+      transform: translateX(6px);
+    }
+
+    /* Main content */
+    main {
+      margin-left: 240px;
+      padding: 40px;
+      flex: 1;
+    }
+    header {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 40px 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    header p {
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+
+    section {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+    section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    /* Project list */
+    .projects-list li {
+      margin-bottom: 10px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .projects-list li:hover {
+      color: var(--secondary);
+      cursor: pointer;
+    }
+
+    /* Contact buttons */
+    .contact-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .contact-buttons a {
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      background: linear-gradient(90deg, #14b8a6, #3b82f6);
+      color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .contact-buttons a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Chatbot */
+    .chatBot {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      max-height: 450px;
+      display: none;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      overflow: hidden;
+      animation: fadeInUp 0.5s ease-in-out;
+    }
+    .chatBot.maximized {
+      width: 500px;
+      height: 600px;
+      max-height: none;
+    }
+    .chat-header {
+      background: linear-gradient(90deg, #14b8a6, #3b82f6);
+      color: #fff;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: move;
+    }
+    .chatbox {
+      list-style: none;
+      padding: 15px;
+      margin: 0;
+      flex: 1;
+      overflow-y: auto;
+      background: #f9fafb;
+    }
+    .chatbox li {
+      margin-bottom: 12px;
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      line-height: 1.4;
+      animation: fadeInUp 0.3s ease-in-out;
+    }
+    .chat-incoming {
+      background: var(--assistant);
+      align-self: flex-start;
+    }
+    .chat-outgoing {
+      background: var(--user);
+      align-self: flex-end;
+    }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      background: #fff;
+    }
+    .chat-input textarea {
+      flex: 1;
+      resize: none;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 8px 12px;
+    }
+    .chat-input button {
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      margin-left: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .chat-input button:hover {
+      background: #0d9488;
+    }
+
+    #openChatBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 26px;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+    #openChatBtn:hover {
+      transform: scale(1.15) rotate(8deg);
+    }
+
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <h2 onclick="document.getElementById('home').scrollIntoView({behavior: 'smooth'})">Anas Khan</h2>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact Me</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <header id="home">
+      <h1>Welcome to My Portfolio</h1>
+      <p>AI Researcher | Deep Learning | Medical Imaging | Generative AI</p>
+    </header>
+
+    <section>
+      <h2>About Me</h2>
+      <p>I am Anas Khan, an AI enthusiast and researcher with a background in Electrical Engineering. My expertise includes deep learning, medical image analysis, and intelligent systems. I am currently exploring Generative AI, multi-agent architectures, and full-stack AI development.</p>
+      <p><strong>💡 Want to know more? Talk to my assistant at the bottom right.</strong></p>
+    </section>
+
+    <section>
+      <h2>Highlights</h2>
+      <ul>
+        <li>✔️ Published research on deep learning for medical imaging</li>
+        <li>✔️ Hands-on experience with LangGraph & multi-agent systems</li>
+        <li>✔️ Skilled in FastAPI, Python, and AI application development</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul class="projects-list">
+        <li>🛩️ Smart conversational chatbot using Langraph</li>
+        <li>🧠 CBAM-Attention Gate-based U-Net for Retinal Vessel Segmentation</li>
+        <li>🤖 Multi-Agent Chatbot with LangGraph</li>
+        <li>📊 Sentiment Analysis using Recurrent Neural Networks</li>
+        <li>🔢 Neural Network from Scratch (NumPy + MNIST)</li>
+        <li>📚 GPT-2 Fine-Tuned on Shakespeare’s Hamlet</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <p>You can reach out to me via the following platforms:</p>
+      <div class="contact-buttons">
+        <a href="mailto:anask8726@gmail.com"><i class="fas fa-envelope"></i> Gmail</a>
+        <a href="https://www.linkedin.com/in/anas-khan-a05730148/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/Anaspro72" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://wa.me/923448819182" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chatbot -->
+  <div class="chatBot" id="chatWidget">
+    <div class="chat-header" id="chatHeader">
+      <span><i class="fas fa-robot"></i> Assistant</span>
+      <div class="controls">
+        <button onclick="toggleMaximize()"><i class="fas fa-expand"></i></button>
+        <button onclick="cancel()">&times;</button>
+      </div>
+    </div>
+    <ul class="chatbox" id="chatbox"></ul>
+    <div class="chat-input">
+      <textarea rows="1" placeholder="Type a message..." id="chatTextarea"></textarea>
+      <button><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <button id="openChatBtn" onclick="openChat()"><i class="fas fa-comment-dots"></i></button>
+
+  <script>
+    const chatInput = document.querySelector('.chat-input textarea');
+    const sendChatBtn = document.querySelector('.chat-input button');
+    const chatbox = document.querySelector(".chatbox");
+    const chatWidget = document.getElementById("chatWidget");
+    const chatHeader = document.getElementById("chatHeader");
+    const openChatBtn = document.getElementById("openChatBtn");
+
+    let userMessage;
+    let isDragging = false, offsetX, offsetY;
+
+    const createChatLi = (message, className) => {
+      const chatLi = document.createElement("li");
+      chatLi.classList.add(className);
+      chatLi.textContent = message;
+      return chatLi;
+    };
+
+    const generateResponse = (incomingChatLi) => {
+      fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMessage,
+          session_id: "portfolio_session"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        incomingChatLi.textContent = data.response;
+      })
+      .catch(() => {
+        incomingChatLi.textContent = "⚠️ Oops! Something went wrong.";
+      })
+      .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+    };
+
+    const handleChat = () => {
+      userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      chatbox.appendChild(createChatLi(userMessage, "chat-outgoing"));
+      chatbox.scrollTo(0, chatbox.scrollHeight);
+      chatInput.value = "";
+
+      setTimeout(() => {
+        const incomingChatLi = createChatLi("Thinking...", "chat-incoming");
+        chatbox.appendChild(incomingChatLi);
+        chatbox.scrollTo(0, chatbox.scrollHeight);
+        generateResponse(incomingChatLi);
+      }, 600);
+    };
+
+    sendChatBtn.addEventListener("click", handleChat);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleChat();
+      }
+    });
+
+    function cancel() {
+      chatWidget.style.display = "none";
+      openChatBtn.style.display = "block";
+    }
+
+    function openChat() {
+      chatWidget.style.display = "flex";
+      openChatBtn.style.display = "none";
+    }
+
+    function toggleMaximize() {
+      chatWidget.classList.toggle("maximized");
+    }
+
+    chatHeader.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - chatWidget.offsetLeft;
+      offsetY = e.clientY - chatWidget.offsetTop;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        chatWidget.style.left = e.clientX - offsetX + "px";
+        chatWidget.style.top = e.clientY - offsetY + "px";
+        chatWidget.style.right = "auto";
+        chatWidget.style.bottom = "auto";
+        chatWidget.style.position = "absolute";
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    chatHeader.addEventListener("dblclick", toggleMaximize);
+  </script>
+
+</body>
+</html>
